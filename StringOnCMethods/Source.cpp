@@ -63,6 +63,16 @@ int main() {
 	d.Reverse(4);
 	cout << "Реверс стринга " << d << endl << endl;
 
+
+	a = "qwerty";
+	b = "asdf";
+	c = "zxc";
+	d = a + "jkl" + b + 'p' + c;
+	cout << d << endl;
+	cout << -d << endl;
+
+	cout << ('a' != a);
+
 	//cout << d << endl; //и это ввод. Закомментил просто потомушта
 	//cin >> d;
 	//cout << d << endl;

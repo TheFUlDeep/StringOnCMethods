@@ -133,6 +133,8 @@ char & MyString::string::operator[](const UINT index) {
 	return ptr[index-1]; 
 }
 
+MyString::string& MyString::string::operator-() { Reverse(); return *this; }
+
 char MyString::string::GetChar(const UINT index) { 
 	if (index < 1 || index > len) throw std::exception("wrong index");
 	return ptr[index - 1]; 
@@ -253,8 +255,8 @@ MyString::string MyString::string::operator+(const char symbol){
 		string tmpstring;
 		tmpstring.AllocMem(len + 1);
 		strcpy(tmpstring.ptr, ptr);
-		tmpstring.ptr[tmpstring.len - 2] = symbol;
-		tmpstring.ptr[tmpstring.len - 1] = '\0';
+		tmpstring.ptr[tmpstring.len - 1] = symbol;
+		tmpstring.ptr[tmpstring.len] = '\0';
 		return tmpstring;
 	}
 }
@@ -313,8 +315,59 @@ MyString::string MyString::string::operator+(const string &str)
 
 
 //следующие три метода можно сделать чуть оптимизированнее, но я сделал так, чтобы меньше писать кода
-void MyString::string::operator+=(const char symbol){*this = *this + symbol;}
+MyString::string& MyString::string::operator+=(const char symbol) { *this = *this + symbol; return *this; }
 
-void MyString::string::operator+=(const char *str) { *this = *this + str; }
+MyString::string& MyString::string::operator+=(const char *str) { *this = *this + str; return *this;}
 
-void MyString::string::operator+=(const string &str) { *this = *this + str; }
+MyString::string& MyString::string::operator+=(const string &str) { *this = *this + str; return *this;}
+
+bool MyString::operator==(const char left , string &right) {return right.operator==(left);}
+
+bool MyString::operator==(const char *left, string &right) {return right.operator==(left);}
+
+bool MyString::operator!=(const char left, string &right) {return right.operator!=(left);}
+
+bool MyString::operator!=(const char *left, string &right) { return right.operator!=(left); }
+
+bool MyString::operator>(const char left, string &right) {return right.operator<(left);}
+
+bool MyString::operator>(const char *left, string &right) { return right.operator<(left); }
+
+bool MyString::operator<(const char left, string &right) { return right.operator>(left); }
+
+bool MyString::operator<(const char *left, string &right) { return right.operator>(left); }
+
+bool MyString::operator>=(const char left, string &right) { return right.operator<=(left); }
+
+bool MyString::operator>=(const char *left, string &right) { return right.operator<=(left); }
+
+bool MyString::operator<=(const char left, string &right) { return right.operator>=(left); }
+
+bool MyString::operator<=(const char *left, string &right) { return right.operator>=(left); }
+
+string MyString::operator+(const char left, string &right)
+{
+	string tmpstr;
+	tmpstr.AllocMem(right.len + 1);
+	tmpstr[1] = left;
+	//можно было через strcpy, но я решил так, так как у меня есть удобный operator[]
+	//то есть вот так strcpy(&tpmstr.ptr[1], right.ptr)
+	for (UINT i = 1; i <= right.len; i++) tmpstr[i + 1] = right[i];
+	tmpstr.ptr[tmpstr.len] = '\0';
+	return tmpstr;
+}
+
+string MyString::operator+(const char *left, string &right)
+{
+	string tmpstr;
+	UINT charlen = (UINT)strlen(left);
+	tmpstr.AllocMem(right.len + charlen);
+
+	//копирую левую часть
+	strcpy(tmpstr.ptr, left);
+
+	//копирую правую часть
+	strcpy(&tmpstr.ptr[charlen], right.ptr);
+
+	return tmpstr;
+}

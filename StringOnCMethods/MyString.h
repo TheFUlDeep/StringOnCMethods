@@ -11,6 +11,8 @@ namespace MyString {
 
 	typedef unsigned int UINT;
 
+
+
 	class string {
 	private:
 		UINT len = 0;
@@ -45,12 +47,24 @@ namespace MyString {
 
 		bool operator==(const string&);
 
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		//во всех дальнейших перегрузках дл€ обратного пор€дка аргументов передаю не константную ссылку на стринг, потому что по константной не могу обратитьс€ к нужному оператору (хз почему так)
+		//дл€ примера bool MyString::operator==(const char *left, const string &right) {return right.operator==(left);} работать не будет, а без const работает
+		friend bool operator==(const char, string&);
+
+		friend bool operator==(const char*, string&);
+
 		//неравенство
 		bool operator!=(const char);
 
 		bool operator!=(const char*);
 
 		bool operator!=(const string&);
+
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend bool operator!=(const char, string&);
+
+		friend bool operator!=(const char*, string&);
 
 		//>
 		bool operator>(const char);
@@ -59,12 +73,22 @@ namespace MyString {
 
 		bool operator>(const string&);
 
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend bool operator>(const char, string&);
+
+		friend bool operator>(const char*, string&);
+
 		//<
 		bool operator<(const char);
 
 		bool operator<(const char*);
 
 		bool operator<(const string&);
+
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend bool operator<(const char, string&);
+
+		friend bool operator<(const char*, string&);
 
 		//>=
 		bool operator>=(const char);
@@ -73,12 +97,22 @@ namespace MyString {
 
 		bool operator>=(const string&);
 
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend bool operator>=(const char, string&);
+
+		friend bool operator>=(const char*, string&);
+
 		//<=
 		bool operator<=(const char);
 
 		bool operator<=(const char*);
 
 		bool operator<=(const string&);
+
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend bool operator<=(const char, string&);
+
+		friend bool operator<=(const char*, string&);
 
 		//конкатинаци€
 		string operator+(const char);
@@ -87,16 +121,23 @@ namespace MyString {
 
 		string operator+(const string&);
 
+		//когда слева не экземпл€р класса, а какой-то другой тип
+		friend string operator+(const char, string&);
+
+		friend string operator+(const char*, string&);
+
 		//конкатинаци с присваиванием
-		//сделал их войдовыми, но не сложно помен€ть возвращаемое значение
-		void operator+=(const char);
+		string& operator+=(const char);
 
-		void operator+=(const char*);
+		string& operator+=(const char*);
 
-		void operator+=(const string&);
+		string& operator+=(const string&);
 
 		//получение ссылки символа по номеру
 		char& operator[](const UINT);
+
+		//унарный минус - реверс
+		string& operator-();
 
 		//получение символа по номеру
 		char GetChar(const UINT);
@@ -178,6 +219,12 @@ namespace MyString {
 		//если начало отрезка 0 - искать с начала
 		//если конец отрезка 0 - искать до конца
 		void Reverse(const UINT = 0, const UINT = 0);
+
+		//преобразование строки(числа) в число
+		operator int();
+
+		//преобразование строки(числа) в дабл
+		operator double();
 
 		UINT GetLen();
 	};
