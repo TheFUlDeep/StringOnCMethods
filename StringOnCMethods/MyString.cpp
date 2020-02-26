@@ -1,10 +1,10 @@
-#define _CRT_SECURE_NO_WARNINGS //потому что strcpy небезопасный метод как и остальные методы
-//strlen возвращает size_t, и я везде принудительно преобразовываю его в unsigned int
+п»ї#define _CRT_SECURE_NO_WARNINGS //РїРѕС‚РѕРјСѓ С‡С‚Рѕ strcpy РЅРµР±РµР·РѕРїР°СЃРЅС‹Р№ РјРµС‚РѕРґ РєР°Рє Рё РѕСЃС‚Р°Р»СЊРЅС‹Рµ РјРµС‚РѕРґС‹
+//strlen РІРѕР·РІСЂР°С‰Р°РµС‚ size_t, Рё СЏ РІРµР·РґРµ РїСЂРёРЅСѓРґРёС‚РµР»СЊРЅРѕ РїСЂРµРѕР±СЂР°Р·РѕРІС‹РІР°СЋ РµРіРѕ РІ unsigned int
 #include "MyString.h"
 
 using namespace MyString;
 
-//TODO убрать все вычитания на единицу
+//TODO СѓР±СЂР°С‚СЊ РІСЃРµ РІС‹С‡РёС‚Р°РЅРёСЏ РЅР° РµРґРёРЅРёС†Сѓ
 
 void MyString::string::ClearMem() {if (ptr != nullptr) free(ptr); }
 
@@ -84,11 +84,11 @@ bool MyString::string::operator!=(const string &str) { return operator==(str) ==
 
 bool MyString::string::operator>(const char symbol)
 {
-//	char *tmpstr = (char*)malloc(sizeof(char)*2);//чет не подумал, что могу просто написать char tmpstr[2];. Оставлю этот вариант на память
+//	char *tmpstr = (char*)malloc(sizeof(char)*2);//С‡РµС‚ РЅРµ РїРѕРґСѓРјР°Р», С‡С‚Рѕ РјРѕРіСѓ РїСЂРѕСЃС‚Рѕ РЅР°РїРёСЃР°С‚СЊ char tmpstr[2];. РћСЃС‚Р°РІР»СЋ СЌС‚РѕС‚ РІР°СЂРёР°РЅС‚ РЅР° РїР°РјСЏС‚СЊ
 	char tmpstr[2];
 	tmpstr[0] = symbol;
 	tmpstr[1] = '\0';
-	auto res = strcmp(ptr, tmpstr);//auto, потому что я хз какой точно тип возвращает strcmp, мне просто достаточно знать, что оно может быть >0 и <0
+	auto res = strcmp(ptr, tmpstr);//auto, РїРѕС‚РѕРјСѓ С‡С‚Рѕ СЏ С…Р· РєР°РєРѕР№ С‚РѕС‡РЅРѕ С‚РёРї РІРѕР·РІСЂР°С‰Р°РµС‚ strcmp, РјРЅРµ РїСЂРѕСЃС‚Рѕ РґРѕСЃС‚Р°С‚РѕС‡РЅРѕ Р·РЅР°С‚СЊ, С‡С‚Рѕ РѕРЅРѕ РјРѕР¶РµС‚ Р±С‹С‚СЊ >0 Рё <0
 //	free(tmpstr);
 	return res > 0;
 }
@@ -97,7 +97,7 @@ bool MyString::string::operator>(const char *str){return strcmp(ptr, str) > 0;}
 
 bool MyString::string::operator>(const string &str){return strcmp(ptr, str.ptr) > 0;}
 
-//следующие ДЕВЯТЬ(9(nine)) методов можно сделать через strcmp, что потребует меньше действий от программы, но я сделаю через уже готовые операторы
+//СЃР»РµРґСѓСЋС‰РёРµ Р”Р•Р’РЇРўР¬(9(nine)) РјРµС‚РѕРґРѕРІ РјРѕР¶РЅРѕ СЃРґРµР»Р°С‚СЊ С‡РµСЂРµР· strcmp, С‡С‚Рѕ РїРѕС‚СЂРµР±СѓРµС‚ РјРµРЅСЊС€Рµ РґРµР№СЃС‚РІРёР№ РѕС‚ РїСЂРѕРіСЂР°РјРјС‹, РЅРѕ СЏ СЃРґРµР»Р°СЋ С‡РµСЂРµР· СѓР¶Рµ РіРѕС‚РѕРІС‹Рµ РѕРїРµСЂР°С‚РѕСЂС‹
 bool MyString::string::operator<(const char symbol){return (operator!=(symbol) == true && operator>(symbol) == false);}
 
 bool MyString::string::operator<(const char *str) { return (operator!=(str) == true && operator>(str) == false); }
@@ -116,9 +116,9 @@ bool MyString::string::operator<=(const char *str) { return operator>(str) == fa
 
 bool MyString::string::operator<=(const string &str) { return operator>(str) == false;}
 
-std::ostream &MyString::operator<<(std::ostream &out, const string &str) { out << str.ptr; return out; }//если ptr будет nullptr, то выбросится исключение
+std::ostream &MyString::operator<<(std::ostream &out, const string &str) { out << str.ptr; return out; }//РµСЃР»Рё ptr Р±СѓРґРµС‚ nullptr, С‚Рѕ РІС‹Р±СЂРѕСЃРёС‚СЃСЏ РёСЃРєР»СЋС‡РµРЅРёРµ
 
-//сделал как показали в примере на практике
+//СЃРґРµР»Р°Р» РєР°Рє РїРѕРєР°Р·Р°Р»Рё РІ РїСЂРёРјРµСЂРµ РЅР° РїСЂР°РєС‚РёРєРµ
 std::istream & MyString::operator>>(std::istream & in, string &str)
 {
 	char buf[255];
@@ -179,9 +179,9 @@ void MyString::string::SwapIntervals(const UINT start1, const UINT end1, const U
 	UINT tmpstart1 = start1; UINT tmpstart2 = start2; UINT tmpend1 = end1; UINT tmpend2 = end2;
 	IntervalException(tmpstart1, tmpend1);
 	IntervalException(tmpstart2, tmpend2);
-	if ((tmpend1 - tmpstart1 + 1) != (tmpend2 - tmpstart2 + 1)) return;//если длины разные  //можно еще сделать свап даже для разных длин, но тогда придется сдвигать, а мне лень писать это
+	if ((tmpend1 - tmpstart1 + 1) != (tmpend2 - tmpstart2 + 1)) return;//РµСЃР»Рё РґР»РёРЅС‹ СЂР°Р·РЅС‹Рµ  //РјРѕР¶РЅРѕ РµС‰Рµ СЃРґРµР»Р°С‚СЊ СЃРІР°Рї РґР°Р¶Рµ РґР»СЏ СЂР°Р·РЅС‹С… РґР»РёРЅ, РЅРѕ С‚РѕРіРґР° РїСЂРёРґРµС‚СЃСЏ СЃРґРІРёРіР°С‚СЊ, Р° РјРЅРµ Р»РµРЅСЊ РїРёСЃР°С‚СЊ СЌС‚Рѕ
 
-	//если отрезки пересекаются
+	//РµСЃР»Рё РѕС‚СЂРµР·РєРё РїРµСЂРµСЃРµРєР°СЋС‚СЃСЏ
 	for (UINT i = tmpstart1; i <= tmpend1; i++)for (UINT j = tmpstart2; j <= tmpend2; j++)if (i == j) return;
 
 	UINT iter = 0;
@@ -211,7 +211,7 @@ void MyString::string::Reverse(const UINT start1, const UINT end1)
 	UINT end = end1;
 	IntervalException(start, end);
 	UINT intervallen = end - start + 1;
-	UINT halflen = start + (intervallen / 2);//не знаю, как я это придумал, но это поиск индекса центрального элемента из отрезка. Сначала ищу длину от начала отрезка до его середины, а потом прибавляю расстояние от начала стринга
+	UINT halflen = start + (intervallen / 2);//РЅРµ Р·РЅР°СЋ, РєР°Рє СЏ СЌС‚Рѕ РїСЂРёРґСѓРјР°Р», РЅРѕ СЌС‚Рѕ РїРѕРёСЃРє РёРЅРґРµРєСЃР° С†РµРЅС‚СЂР°Р»СЊРЅРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РёР· РѕС‚СЂРµР·РєР°. РЎРЅР°С‡Р°Р»Р° РёС‰Сѓ РґР»РёРЅСѓ РѕС‚ РЅР°С‡Р°Р»Р° РѕС‚СЂРµР·РєР° РґРѕ РµРіРѕ СЃРµСЂРµРґРёРЅС‹, Р° РїРѕС‚РѕРј РїСЂРёР±Р°РІР»СЏСЋ СЂР°СЃСЃС‚РѕСЏРЅРёРµ РѕС‚ РЅР°С‡Р°Р»Р° СЃС‚СЂРёРЅРіР°
 	UINT iter = 0;
 	for (UINT i = start; i < halflen; i++) {
 		SwapSymbols(i, UINT(end - iter));
@@ -221,7 +221,7 @@ void MyString::string::Reverse(const UINT start1, const UINT end1)
 
 UINT MyString::string::GetLen(){return len;}
 
-//возвращает индекс или 0 если ничего не найдено
+//РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РёР»Рё 0 РµСЃР»Рё РЅРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ
 UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end1)
 {
 	UINT start = start1;
@@ -233,7 +233,7 @@ UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end
 	return 0;
 }
 
-//возвращает индекс начала найденного паттерна или 0, если ничего не найдено
+//РІРѕР·РІСЂР°С‰Р°РµС‚ РёРЅРґРµРєСЃ РЅР°С‡Р°Р»Р° РЅР°Р№РґРµРЅРЅРѕРіРѕ РїР°С‚С‚РµСЂРЅР° РёР»Рё 0, РµСЃР»Рё РЅРёС‡РµРіРѕ РЅРµ РЅР°Р№РґРµРЅРѕ
 UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)
 {
 	UINT start = start1;
@@ -241,7 +241,7 @@ UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)
 	IntervalException(start, end);
 	UINT tmpstrlen = (UINT)strlen(str);
 	UINT intervallen = end - start + 1;
-	if (intervallen < tmpstrlen) return 0;//вместо этого можно выбросить исключение, но я хз как лучше
+	if (intervallen < tmpstrlen) return 0;//РІРјРµСЃС‚Рѕ СЌС‚РѕРіРѕ РјРѕР¶РЅРѕ РІС‹Р±СЂРѕСЃРёС‚СЊ РёСЃРєР»СЋС‡РµРЅРёРµ, РЅРѕ СЏ С…Р· РєР°Рє Р»СѓС‡С€Рµ
 	for (UINT i = start; i <= (end - tmpstrlen + 1); i++) if (strncmp(&ptr[i - 1], str, tmpstrlen) == 0) return i;
 	return 0;
 }
@@ -272,7 +272,7 @@ MyString::string MyString::string::operator+(const char *str)
 		string tmpstring;
 		tmpstring.AllocMem(len + strl);
 		UINT curi = 0;
-		//посимвольно копирую
+		//РїРѕСЃРёРјРІРѕР»СЊРЅРѕ РєРѕРїРёСЂСѓСЋ
 		for (UINT i = 1; i <= len; i++) {
 			tmpstring.ptr[curi] = ptr[i - 1];
 			curi++;
@@ -290,10 +290,10 @@ MyString::string MyString::string::operator+(const string &str)
 {
 	if (str.len != 0) {
 		UINT newlen = len + str.len;
-		//создаю временный стринг, в котором буду хранить новую строку
+		//СЃРѕР·РґР°СЋ РІСЂРµРјРµРЅРЅС‹Р№ СЃС‚СЂРёРЅРі, РІ РєРѕС‚РѕСЂРѕРј Р±СѓРґСѓ С…СЂР°РЅРёС‚СЊ РЅРѕРІСѓСЋ СЃС‚СЂРѕРєСѓ
 		string tmpstring;
 		tmpstring.AllocMem(newlen);
-		//посимвольно копирую (можно было исопльзовать strcpy)
+		//РїРѕСЃРёРјРІРѕР»СЊРЅРѕ РєРѕРїРёСЂСѓСЋ (РјРѕР¶РЅРѕ Р±С‹Р»Рѕ РёСЃРѕРїР»СЊР·РѕРІР°С‚СЊ strcpy)
 		UINT curi = 0;
 		for (UINT i = 1; i <= len; i++) {
 			tmpstring.ptr[curi] = ptr[i - 1];
@@ -304,9 +304,9 @@ MyString::string MyString::string::operator+(const string &str)
 			curi++;
 		}
 		tmpstring.ptr[curi] = '\0';
-		//временный tmpstring умрет и очистит за собой память, чего я не хочу
-		//но если я изменю его деструктор, то он вообще никогда не очистит память
-		//решение - использовать конструктор копирования
+		//РІСЂРµРјРµРЅРЅС‹Р№ tmpstring СѓРјСЂРµС‚ Рё РѕС‡РёСЃС‚РёС‚ Р·Р° СЃРѕР±РѕР№ РїР°РјСЏС‚СЊ, С‡РµРіРѕ СЏ РЅРµ С…РѕС‡Сѓ
+		//РЅРѕ РµСЃР»Рё СЏ РёР·РјРµРЅСЋ РµРіРѕ РґРµСЃС‚СЂСѓРєС‚РѕСЂ, С‚Рѕ РѕРЅ РІРѕРѕР±С‰Рµ РЅРёРєРѕРіРґР° РЅРµ РѕС‡РёСЃС‚РёС‚ РїР°РјСЏС‚СЊ
+		//СЂРµС€РµРЅРёРµ - РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊ РєРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 		return tmpstring;
 	}
 	else {
@@ -315,7 +315,7 @@ MyString::string MyString::string::operator+(const string &str)
 }
 
 
-//следующие три метода можно сделать чуть оптимизированнее, но я сделал так, чтобы меньше писать кода
+//СЃР»РµРґСѓСЋС‰РёРµ С‚СЂРё РјРµС‚РѕРґР° РјРѕР¶РЅРѕ СЃРґРµР»Р°С‚СЊ С‡СѓС‚СЊ РѕРїС‚РёРјРёР·РёСЂРѕРІР°РЅРЅРµРµ, РЅРѕ СЏ СЃРґРµР»Р°Р» С‚Р°Рє, С‡С‚РѕР±С‹ РјРµРЅСЊС€Рµ РїРёСЃР°С‚СЊ РєРѕРґР°
 MyString::string& MyString::string::operator+=(const char symbol) { *this = *this + symbol; return *this; }
 
 MyString::string& MyString::string::operator+=(const char *str) { *this = *this + str; return *this;}
@@ -351,8 +351,8 @@ string MyString::operator+(const char left, string &right)
 	string tmpstr;
 	tmpstr.AllocMem(right.len + 1);
 	tmpstr[1] = left;
-	//можно было через strcpy, но я решил так, так как у меня есть удобный operator[]
-	//то есть вот так strcpy(&tpmstr.ptr[1], right.ptr)
+	//РјРѕР¶РЅРѕ Р±С‹Р»Рѕ С‡РµСЂРµР· strcpy, РЅРѕ СЏ СЂРµС€РёР» С‚Р°Рє, С‚Р°Рє РєР°Рє Сѓ РјРµРЅСЏ РµСЃС‚СЊ СѓРґРѕР±РЅС‹Р№ operator[]
+	//С‚Рѕ РµСЃС‚СЊ РІРѕС‚ С‚Р°Рє strcpy(&tpmstr.ptr[1], right.ptr)
 	for (UINT i = 1; i <= right.len; i++) tmpstr[i + 1] = right[i];
 	tmpstr.ptr[tmpstr.len] = '\0';
 	return tmpstr;
@@ -364,10 +364,10 @@ string MyString::operator+(const char *left, string &right)
 	UINT charlen = (UINT)strlen(left);
 	tmpstr.AllocMem(right.len + charlen);
 
-	//копирую левую часть
+	//РєРѕРїРёСЂСѓСЋ Р»РµРІСѓСЋ С‡Р°СЃС‚СЊ
 	strcpy(tmpstr.ptr, left);
 
-	//копирую правую часть
+	//РєРѕРїРёСЂСѓСЋ РїСЂР°РІСѓСЋ С‡Р°СЃС‚СЊ
 	strcpy(&tmpstr.ptr[charlen], right.ptr);
 
 	return tmpstr;
