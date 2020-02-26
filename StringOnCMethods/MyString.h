@@ -154,23 +154,23 @@ namespace MyString {
 		//аргументы - что искать, на что заменять, максимальное количество замен (если 0, то неограничено), начало отрезка (в котором искать), конец отрезка (в котором искать)
 		//если начало отрезка 0 - искать с начала
 		//если конец отрезка 0 - искать до конца
-		string& GSub(const char*, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char*, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const char*, const string&, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char*, const string&, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const char*, const char, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char*, const char, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const string&, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const string&, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const string&, string&, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const string&, string&, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const string&, const char, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const string&, const char, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const char, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char, const char*, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const char, const string&, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char, const string&, const UINT = 0, const UINT = 0, const UINT = 0);
 
-		string& GSub(const char, const char, const UINT = 0, const UINT = 0, const UINT = 0);
+		string GSub(const char, const char, const UINT = 0, const UINT = 0, const UINT = 0);
 
 
 		//поиск. возвращает начало найденного паттерна или 0;

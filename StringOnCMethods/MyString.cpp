@@ -84,11 +84,12 @@ bool MyString::string::operator!=(const string &str) { return operator==(str) ==
 
 bool MyString::string::operator>(const char symbol)
 {
-	char *tmpstr = (char*)malloc(sizeof(char)*2);
+//	char *tmpstr = (char*)malloc(sizeof(char)*2);//чет не подумал, что могу просто написать char tmpstr[2];. Оставлю этот вариант на память
+	char tmpstr[2];
 	tmpstr[0] = symbol;
 	tmpstr[1] = '\0';
 	auto res = strcmp(ptr, tmpstr);//auto, потому что я хз какой точно тип возвращает strcmp, мне просто достаточно знать, что оно может быть >0 и <0
-	free(tmpstr);
+//	free(tmpstr);
 	return res > 0;
 }
 
