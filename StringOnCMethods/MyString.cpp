@@ -6,6 +6,7 @@
 using namespace MyString;
 
 //TODO убрать все вычитания на единицу
+//TODO при преобразовании в число преобразовывать символ 'е' (степень)
 
 void MyString::string::ClearMem() {if (ptr != nullptr) free(ptr); }
 
@@ -245,7 +246,7 @@ MyString::string::operator double()
 	UINT point = Find('.');
 	if (point == 0) point = len+1;
 	//если в строке несколько точек, то это не дабл
-	else if (Find('.', point + 1) != 0) throw std::exception("its not double");
+	else if (point != len && Find('.', point + 1) != 0) throw std::exception("its not double");
 
 	bool firstminus = false;
 	UINT startpos = 1;
