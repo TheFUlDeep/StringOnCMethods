@@ -20,6 +20,8 @@ namespace MyString {
 		void ClearMem();
 		void AllocMem(UINT);
 		void IntervalException(UINT&, UINT&);//функция для конвертации отрезков. Например исопльзуется в SubString
+		int CharToInt(const char);//получение кода символа
+		short CharToNumber(const char);//преобразованиче цифры в символьном виде в short
 	public:
 		//конструкторы
 		string();
@@ -222,6 +224,8 @@ namespace MyString {
 
 		//преобразование строки(числа) в число
 		operator int();
+
+		operator unsigned int();
 
 		//преобразование строки(числа) в дабл
 		operator double();

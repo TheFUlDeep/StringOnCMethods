@@ -71,7 +71,13 @@ int main() {
 	cout << d << endl;
 	cout << -d << endl;
 
-	cout << ('a' != a);
+	cout << ('a' != a) << endl;
+
+	MyString::string number = "-12345";
+	cout << (int)number << "\n";
+
+	number = "-.1234";
+	cout << (double)number << "\n";
 
 	//cout << d << endl; //и это ввод. Закомментил просто потомушта
 	//cin >> d;

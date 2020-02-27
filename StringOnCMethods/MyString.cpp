@@ -1,6 +1,7 @@
 ﻿#define _CRT_SECURE_NO_WARNINGS //потому что strcpy небезопасный метод как и остальные методы
 //strlen возвращает size_t, и я везде принудительно преобразовываю его в unsigned int
 #include "MyString.h"
+#include <cmath>
 
 using namespace MyString;
 
@@ -23,6 +24,15 @@ void MyString::string::IntervalException(UINT& start, UINT& end)
 	if (end == 0) end = len;
 	if (start > end) { int tmp = end; end = start; start = tmp; }
 	if (start < 1 || start > len || end < 1 || end > len || (end - start + 1) > len || end < start) throw std::exception("wrong interval args");
+}
+
+int MyString::string::CharToInt(const char c){ return (int)c;}
+
+short MyString::string::CharToNumber(const char symbol)
+{
+	short res = symbol - '0';
+	if (res > 9 || res < 0) throw std::exception("cant get number");
+	return res;
 }
 
 MyString::string::string() = default;
@@ -217,6 +227,44 @@ void MyString::string::Reverse(const UINT start1, const UINT end1)
 		SwapSymbols(i, UINT(end - iter));
 		iter++;
 	}
+}
+
+MyString::string::operator int()
+{
+	bool firstminus = false;
+	UINT startpos = 1;
+	if (operator[](1) == '-') { firstminus = true; startpos = 2; }
+	int res = 0;
+	for (UINT i = startpos; i <= len; i++) res += (CharToNumber(operator[](i)) * ((UINT)pow(10, len - i)));
+	if (firstminus) res = -res;
+	return res;
+}
+
+MyString::string::operator double()
+{
+	UINT point = Find('.');
+	if (point == 0) point = len+1;
+	//если в строке несколько точек, то это не дабл
+	else if (Find('.', point + 1) != 0) throw std::exception("its not double");
+
+	bool firstminus = false;
+	UINT startpos = 1;
+	if (operator[](1) == '-') { firstminus = true; startpos = 2; }
+
+	double res = 0;
+	for (UINT i = startpos; i <= len; i++)
+	{
+		if (i < point)
+		{
+			res += (CharToNumber(operator[](i)) * (pow(10, (int)(point - i - 1))));
+		}
+		else if (i > point)
+		{
+			res += (CharToNumber(operator[](i)) * (pow(10, (int)(point - i))));
+		}
+	}
+	if (firstminus) res = -res;
+	return res;
 }
 
 UINT MyString::string::GetLen(){return len;}
