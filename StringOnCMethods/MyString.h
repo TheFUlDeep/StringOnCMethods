@@ -221,10 +221,10 @@ namespace MyString {
 		void Reverse(const UINT = 0, const UINT = 0);
 
 		//преобразование строки(числа) в число
-		operator int()const;
+		explicit operator int()const;
 
 		//преобразование строки(числа) в дабл
-		operator double()const;
+		explicit operator double()const;
 
 		UINT GetLen()const;
 	};

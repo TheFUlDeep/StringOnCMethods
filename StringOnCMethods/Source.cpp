@@ -74,7 +74,8 @@ int main() {
 	cout << ('a' != a) << endl;
 
 	MyString::string number = "-123.45";
-	cout << (int)number << "\n";
+	//int rty = number;//ошибка, так как € прописал explicit
+	cout << int(number) << "\n";
 
 	number = "-.1234";
 	cout << (double)number << "\n";
