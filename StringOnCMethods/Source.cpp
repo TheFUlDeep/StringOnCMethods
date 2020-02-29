@@ -73,7 +73,7 @@ int main() {
 
 	cout << ('a' != a) << endl;
 
-	MyString::string number = "-12345";
+	MyString::string number = "-123.45";
 	cout << (int)number << "\n";
 
 	number = "-.1234";

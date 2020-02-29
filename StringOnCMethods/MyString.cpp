@@ -17,7 +17,7 @@ void MyString::string::AllocMem(UINT strlen)
 	len = strlen;
 }
 
-void MyString::string::IntervalException(UINT& start, UINT& end)
+void MyString::string::IntervalException(UINT& start, UINT& end)const
 {
 	//if (start < 0) start = len - start + 1;
 	//if (end < 0) end = len - start + 1;
@@ -27,9 +27,9 @@ void MyString::string::IntervalException(UINT& start, UINT& end)
 	if (start < 1 || start > len || end < 1 || end > len || (end - start + 1) > len || end < start) throw std::exception("wrong interval args");
 }
 
-int MyString::string::CharToInt(const char c){ return (int)c;}
+int MyString::string::CharToInt(const char c)const { return (int)c;}
 
-short MyString::string::CharToNumber(const char symbol)
+short MyString::string::CharToNumber(const char symbol)const
 {
 	short res = symbol - '0';
 	if (res > 9 || res < 0) throw std::exception("cant get number");
@@ -81,19 +81,19 @@ MyString::string & MyString::string::operator=(const string& str)
 	return *this;
 }
 
-bool MyString::string::operator==(const char symbol){return len == 1 && ptr != nullptr && ptr[0] == symbol;}
+bool MyString::string::operator==(const char symbol)const {return len == 1 && ptr != nullptr && ptr[0] == symbol;}
 
-bool MyString::string::operator==(const char *str){return strcmp(ptr,str) == 0;}
+bool MyString::string::operator==(const char *str)const {return strcmp(ptr,str) == 0;}
 
-bool MyString::string::operator==(const string &str) { return (len == str.len && ptr == str.ptr) || strcmp(ptr, str.ptr) == 0; }
+bool MyString::string::operator==(const string &str)const { return (len == str.len && (ptr == str.ptr || strcmp(ptr, str.ptr) == 0)); }
 
-bool MyString::string::operator!=(const char symbol){return operator==(symbol) == false;}
+bool MyString::string::operator!=(const char symbol)const {return operator==(symbol) == false;}
 
-bool MyString::string::operator!=(const char *str) {return operator==(str) == false; }
+bool MyString::string::operator!=(const char *str)const {return operator==(str) == false; }
 
-bool MyString::string::operator!=(const string &str) { return operator==(str) == false; }
+bool MyString::string::operator!=(const string &str)const { return operator==(str) == false; }
 
-bool MyString::string::operator>(const char symbol)
+bool MyString::string::operator>(const char symbol)const
 {
 //	char *tmpstr = (char*)malloc(sizeof(char)*2);//чет не подумал, что могу просто написать char tmpstr[2];. Оставлю этот вариант на память
 	char tmpstr[2];
@@ -104,28 +104,27 @@ bool MyString::string::operator>(const char symbol)
 	return res > 0;
 }
 
-bool MyString::string::operator>(const char *str){return strcmp(ptr, str) > 0;}
+bool MyString::string::operator>(const char *str)const {return strcmp(ptr, str) > 0;}
 
-bool MyString::string::operator>(const string &str){return strcmp(ptr, str.ptr) > 0;}
+bool MyString::string::operator>(const string &str)const {return operator>(str.ptr);}
 
-//следующие ДЕВЯТЬ(9(nine)) методов можно сделать через strcmp, что потребует меньше действий от программы, но я сделаю через уже готовые операторы
-bool MyString::string::operator<(const char symbol){return (operator!=(symbol) == true && operator>(symbol) == false);}
+bool MyString::string::operator<(const char symbol)const {return (operator!=(symbol) == true && operator>(symbol) == false);}
 
-bool MyString::string::operator<(const char *str) { return (operator!=(str) == true && operator>(str) == false); }
+bool MyString::string::operator<(const char *str)const { return strcmp(ptr,str); }
 
-bool MyString::string::operator<(const string &str) { return (operator!=(str) == true && operator>(str) == false); }
+bool MyString::string::operator<(const string &str)const { return operator<(str.ptr); }
 
-bool MyString::string::operator>=(const char symbol) { return operator<(symbol) == false; }
+bool MyString::string::operator>=(const char symbol)const { return operator<(symbol) == false; }
 
-bool MyString::string::operator>=(const char *str) { return operator<(str) == false;}
+bool MyString::string::operator>=(const char *str)const { return operator<(str) == false;}
 
-bool MyString::string::operator>=(const string &str) { return operator<(str) == false;}
+bool MyString::string::operator>=(const string &str)const { return operator<(str) == false;}
 
-bool MyString::string::operator<=(const char symbol) { return operator>(symbol) == false;}
+bool MyString::string::operator<=(const char symbol)const { return operator>(symbol) == false;}
 
-bool MyString::string::operator<=(const char *str) { return operator>(str) == false;}
+bool MyString::string::operator<=(const char *str)const { return operator>(str) == false;}
 
-bool MyString::string::operator<=(const string &str) { return operator>(str) == false;}
+bool MyString::string::operator<=(const string &str)const { return operator>(str) == false;}
 
 std::ostream &MyString::operator<<(std::ostream &out, const string &str) { out << str.ptr; return out; }//если ptr будет nullptr, то выбросится исключение
 
@@ -140,25 +139,25 @@ std::istream & MyString::operator>>(std::istream & in, string &str)
 
 //std::istream & MyString::operator>>(std::istream in&, string &str) {in >> ptr*  return in; }
 
-char & MyString::string::operator[](const UINT index) {
+char & MyString::string::operator[](const UINT index)const {
 	if (index < 1 || index > len) throw std::exception("wrong index");
 	return ptr[index-1]; 
 }
 
-MyString::string& MyString::string::operator-() { Reverse(); return *this; }
+MyString::string MyString::string::operator-()const { MyString::string tmpstr = *this; tmpstr.Reverse(); return tmpstr; }
 
-char MyString::string::GetChar(const UINT index) { 
+char MyString::string::GetChar(const UINT index)const {
 	if (index < 1 || index > len) throw std::exception("wrong index");
 	return ptr[index - 1]; 
 }
 
-int MyString::string::GetInt(const UINT index)
+int MyString::string::GetInt(const UINT index)const
 {
 	if (index < 1 || index > len) throw std::exception("wrong index");
 	return (int)GetChar(index);
 }
 
-MyString::string MyString::string::SubString(const UINT start1, const UINT end1)
+MyString::string MyString::string::SubString(const UINT start1, const UINT end1)const
 {
 	UINT start = start1;
 	UINT end = end1;
@@ -230,18 +229,27 @@ void MyString::string::Reverse(const UINT start1, const UINT end1)
 	}
 }
 
-MyString::string::operator int()
+MyString::string::operator int()const
 {
+	UINT point = Find('.');
+	if (point == 0) point = len + 1;
+	
+	//пытаюсь перевести каждый символ в число (таким образом выясняю, есть ли там символы кроме цифр). Если там есть другой символ, вылетит исключение
+
 	bool firstminus = false;
 	UINT startpos = 1;
 	if (operator[](1) == '-') { firstminus = true; startpos = 2; }
+
+	//пытаюсь перевести каждый символ в число (таким образом выясняю, есть ли там символы кроме цифр). Если там есть другой символ, вылетит исключение
+	for (UINT i = startpos; i <= len; i++) { if (i == point) continue; auto a = CharToNumber(operator[](i)); }
+
 	int res = 0;
-	for (UINT i = startpos; i <= len; i++) res += (CharToNumber(operator[](i)) * ((UINT)pow(10, len - i)));
+	for (UINT i = startpos; i < point; i++) res += (CharToNumber(operator[](i)) * ((UINT)pow(10, point - 1 - i)));
 	if (firstminus) res = -res;
 	return res;
 }
 
-MyString::string::operator double()
+MyString::string::operator double()const
 {
 	UINT point = Find('.');
 	if (point == 0) point = len+1;
@@ -268,10 +276,10 @@ MyString::string::operator double()
 	return res;
 }
 
-UINT MyString::string::GetLen(){return len;}
+UINT MyString::string::GetLen()const {return len;}
 
 //возвращает индекс или 0 если ничего не найдено
-UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end1)
+UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end1)const
 {
 	UINT start = start1;
 	UINT end = end1;
@@ -283,7 +291,7 @@ UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end
 }
 
 //возвращает индекс начала найденного паттерна или 0, если ничего не найдено
-UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)
+UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)const
 {
 	UINT start = start1;
 	UINT end = end1;
@@ -295,9 +303,10 @@ UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)
 	return 0;
 }
 
-UINT MyString::string::Find(const string &str, const UINT start, const UINT end){return Find(str.ptr,start,end);}
+UINT MyString::string::Find(const string &str, const UINT start, const UINT end)const {return Find(str.ptr,start,end);}
 
-MyString::string MyString::string::operator+(const char symbol){
+MyString::string MyString::string::operator+(const char symbol)const
+{
 	if (len == 0) {
 		return string(symbol);
 	}
@@ -311,7 +320,7 @@ MyString::string MyString::string::operator+(const char symbol){
 	}
 }
 
-MyString::string MyString::string::operator+(const char *str)
+MyString::string MyString::string::operator+(const char *str)const
 {
 	if (len == 0) {
 		return string(str);
@@ -335,7 +344,7 @@ MyString::string MyString::string::operator+(const char *str)
 	}
 }
 
-MyString::string MyString::string::operator+(const string &str)
+MyString::string MyString::string::operator+(const string &str)const
 {
 	if (str.len != 0) {
 		UINT newlen = len + str.len;
@@ -371,31 +380,31 @@ MyString::string& MyString::string::operator+=(const char *str) { *this = *this 
 
 MyString::string& MyString::string::operator+=(const string &str) { *this = *this + str; return *this;}
 
-bool MyString::operator==(const char left , string &right) {return right.operator==(left);}
+bool MyString::operator==(const char left , const string &right) {return right.operator==(left);}
 
-bool MyString::operator==(const char *left, string &right) {return right.operator==(left);}
+bool MyString::operator==(const char *left, const string &right) {return right.operator==(left);}
 
-bool MyString::operator!=(const char left, string &right) {return right.operator!=(left);}
+bool MyString::operator!=(const char left, const string &right) {return right.operator!=(left);}
 
-bool MyString::operator!=(const char *left, string &right) { return right.operator!=(left); }
+bool MyString::operator!=(const char *left, const string &right) { return right.operator!=(left); }
 
-bool MyString::operator>(const char left, string &right) {return right.operator<(left);}
+bool MyString::operator>(const char left, const string &right) {return right.operator<(left);}
 
-bool MyString::operator>(const char *left, string &right) { return right.operator<(left); }
+bool MyString::operator>(const char *left, const string &right) { return right.operator<(left); }
 
-bool MyString::operator<(const char left, string &right) { return right.operator>(left); }
+bool MyString::operator<(const char left, const string &right) { return right.operator>(left); }
 
-bool MyString::operator<(const char *left, string &right) { return right.operator>(left); }
+bool MyString::operator<(const char *left, const string &right) { return right.operator>(left); }
 
-bool MyString::operator>=(const char left, string &right) { return right.operator<=(left); }
+bool MyString::operator>=(const char left, const string &right) { return right.operator<=(left); }
 
-bool MyString::operator>=(const char *left, string &right) { return right.operator<=(left); }
+bool MyString::operator>=(const char *left, const string &right) { return right.operator<=(left); }
 
-bool MyString::operator<=(const char left, string &right) { return right.operator>=(left); }
+bool MyString::operator<=(const char left, const string &right) { return right.operator>=(left); }
 
-bool MyString::operator<=(const char *left, string &right) { return right.operator>=(left); }
+bool MyString::operator<=(const char *left, const string &right) { return right.operator>=(left); }
 
-string MyString::operator+(const char left, string &right)
+string MyString::operator+(const char left, const string &right)
 {
 	string tmpstr;
 	tmpstr.AllocMem(right.len + 1);
@@ -407,7 +416,7 @@ string MyString::operator+(const char left, string &right)
 	return tmpstr;
 }
 
-string MyString::operator+(const char *left, string &right)
+string MyString::operator+(const char *left, const string &right)
 {
 	string tmpstr;
 	UINT charlen = (UINT)strlen(left);
