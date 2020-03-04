@@ -15,7 +15,7 @@ int main() {
 
 	cout << "Конструктор с аргументом - символом:";
 	MyString::string b('a');
-	cout << " Объект имеет адрес: " << &b << ", его первый элемент: " << b.GetChar(1) << endl << "Тут же я продемонстрировал работу метода GetChar" << endl << endl;
+	cout << " Объект имеет адрес: " << &b << ", его первый элемент: " << b.Char(1) << endl << "Тут же я продемонстрировал работу метода GetChar" << endl << endl;
 
 	cout << "Конструктор с аргументом - массив чаров:";
 	MyString::string c("asd");
@@ -54,9 +54,9 @@ int main() {
 
 	cout << "Поиск символа в стринге " << d.Find('a') << endl << endl;
 
-	cout << "Поиск стринга в стринге " << d.Find(MyString::string("def")) << endl << endl;
+	cout << "Поиск стринга в стринге " << d.Find(MyString::string('h')) << endl << endl;
 
-	d.SwapIntervals(1, 3, 4, 6);
+	d.SwapIntervals(1, 2, 4, 6);
 	cout << "Свап двух кусков " << d << endl << endl;
 
 	d = "йцукен";
@@ -67,7 +67,7 @@ int main() {
 	a = "qwerty";
 	b = "asdf";
 	c = "zxc";
-	d = a + "jkl" + b + 'p' + c;
+	d = a + ("jkl" + b) + 'p' + c;
 	cout << d << endl;
 	cout << -d << endl;
 
@@ -79,6 +79,9 @@ int main() {
 
 	number = "-.1234";
 	cout << (double)number << "\n";
+
+	number.InsertAfter(4, c);
+	cout << number << endl;
 
 	//cout << d << endl; //и это ввод. Закомментил просто потомушта
 	//cin >> d;

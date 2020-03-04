@@ -140,10 +140,10 @@ namespace MyString {
 		string operator-()const;
 
 		//получение символа по номеру
-		char GetChar(const UINT)const;
+		char Char(const UINT)const;
 
 
-		int GetInt(const UINT)const;
+		int Int(const UINT)const;
 
 		//получение строки по отрезку
 		//если начало отрезка 0 - искать с начала
@@ -154,23 +154,23 @@ namespace MyString {
 		//аргументы - что искать, на что заменять, максимальное количество замен (если 0, то неограничено), начало отрезка (в котором искать), конец отрезка (в котором искать)
 		//если начало отрезка 0 - искать с начала
 		//если конец отрезка 0 - искать до конца
-		string GSub(const char*, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char*, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const char*, const string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char*, const string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const char*, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char*, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const string&, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const string&, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const string&, string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const string&, string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const string&, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const string&, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const char, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char, const char*, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const char, const string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char, const string&, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
-		string GSub(const char, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
+		//string GSub(const char, const char, const UINT = 0, const UINT = 0, const UINT = 0)const;
 
 
 		//поиск. возвращает начало найденного паттерна или 0;
@@ -182,19 +182,12 @@ namespace MyString {
 
 		UINT Find(const string&, const UINT = 0, const UINT = 0)const;
 
-		//TODO вставка
-		void InsertAfter(const UINT, char);
+		//вставка после указанного индекса
+		void InsertAfter(const UINT, const char);
 
-		void InsertAfter(const UINT, char*);
+		void InsertAfter(const UINT, const char*);
 
-		void InsertAfter(const UINT, string&);
-
-		//TODO вставка с другой стороны
-		void InsertBefore(const UINT, char);
-
-		void InsertBefore(const UINT, char*);
-
-		void InsertBefore(const UINT, string&);
+		void InsertAfter(const UINT, const string&);
 
 		//свап твух символов по индексам
 		void SwapSymbols(const UINT, const UINT);
@@ -226,6 +219,21 @@ namespace MyString {
 		//преобразование строки(числа) в дабл
 		explicit operator double()const;
 
-		UINT GetLen()const;
+		//получение длины
+		UINT Len()const;
+
+		//получение сишной строки (массива чаров)
+		const char* CString()const;
+
+		//итераторы
+		char* begin()const;
+		char* end()const;
+		const char* cbegin()const;
+		const char* cend()const;
+
+		char* rbegin()const;
+		char* rend()const;
+		const char* crbegin()const;
+		const char* crend()const;
 	};
 }

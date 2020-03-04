@@ -146,15 +146,15 @@ char & MyString::string::operator[](const UINT index)const {
 
 MyString::string MyString::string::operator-()const { MyString::string tmpstr = *this; tmpstr.Reverse(); return tmpstr; }
 
-char MyString::string::GetChar(const UINT index)const {
+char MyString::string::Char(const UINT index)const {
 	if (index < 1 || index > len) throw std::exception("wrong index");
 	return ptr[index - 1]; 
 }
 
-int MyString::string::GetInt(const UINT index)const
+int MyString::string::Int(const UINT index)const
 {
 	if (index < 1 || index > len) throw std::exception("wrong index");
-	return (int)GetChar(index);
+	return (int)Char(index);
 }
 
 MyString::string MyString::string::SubString(const UINT start1, const UINT end1)const
@@ -189,16 +189,31 @@ void MyString::string::SwapIntervals(const UINT start1, const UINT end1, const U
 	UINT tmpstart1 = start1; UINT tmpstart2 = start2; UINT tmpend1 = end1; UINT tmpend2 = end2;
 	IntervalException(tmpstart1, tmpend1);
 	IntervalException(tmpstart2, tmpend2);
-	if ((tmpend1 - tmpstart1 + 1) != (tmpend2 - tmpstart2 + 1)) return;//если длины разные  //можно еще сделать свап даже для разных длин, но тогда придется сдвигать, а мне лень писать это
 
 	//если отрезки пересекаются
 	for (UINT i = tmpstart1; i <= tmpend1; i++)for (UINT j = tmpstart2; j <= tmpend2; j++)if (i == j) return;
 
-	UINT iter = 0;
-	for (UINT i = tmpstart1; i <= tmpend1; i++) {
-		SwapSymbols(i, tmpstart2 + iter);
-		iter++;
+	//делаю так, чтобы tmpstart1 -- tmpend1 всегда был левым
+	if (tmpstart1 > tmpstart2)
+	{
+		UINT tmp;
+		tmp = tmpstart1;
+		tmpstart1 = tmpstart2;
+		tmpstart2 = tmp;
+
+		tmp = tmpend1;
+		tmpend1 = tmpend2;
+		tmpend2 = tmp;
 	}
+
+	//сделал так, чтобы можно было свапать даже разные интервалы
+	string newstr;
+	if ((tmpstart1 - 1) > 0) newstr = this->SubString(0, tmpstart1 - 1);
+	newstr += this->SubString(tmpstart2, tmpend2);
+	if ((tmpstart2 - tmpend1) > 1) newstr += this->SubString(tmpend1+1, tmpstart2-1);
+	newstr += this->SubString(tmpstart1, tmpend1);
+	if (tmpend2 < len) newstr += this->SubString(tmpend2 + 1);
+	*this = newstr;
 }
 
 void MyString::string::Fill(const char symbol, const UINT start1, const UINT end1, const UINT maxfills1)
@@ -233,15 +248,13 @@ MyString::string::operator int()const
 {
 	UINT point = Find('.');
 	if (point == 0) point = len + 1;
-	
-	//пытаюсь перевести каждый символ в число (таким образом выясняю, есть ли там символы кроме цифр). Если там есть другой символ, вылетит исключение
 
 	bool firstminus = false;
 	UINT startpos = 1;
 	if (operator[](1) == '-') { firstminus = true; startpos = 2; }
 
-	//пытаюсь перевести каждый символ в число (таким образом выясняю, есть ли там символы кроме цифр). Если там есть другой символ, вылетит исключение
-	for (UINT i = startpos; i <= len; i++) { if (i == point) continue; auto a = CharToNumber(operator[](i)); }
+	//пытаюсь перевести каждый символ после точки в число (таким образом выясняю, есть ли там символы кроме цифр). Если там есть другой символ, вылетит исключение
+	if (point < len) for (UINT i = point+1; i <= len; i++) { auto a = CharToNumber(operator[](i)); }
 
 	int res = 0;
 	for (UINT i = startpos; i < point; i++) res += (CharToNumber(operator[](i)) * ((UINT)pow(10, point - 1 - i)));
@@ -253,8 +266,9 @@ MyString::string::operator double()const
 {
 	UINT point = Find('.');
 	if (point == 0) point = len+1;
+
 	//если в строке несколько точек, то это не дабл
-	else if (point != len && Find('.', point + 1) != 0) throw std::exception("its not double");
+	//else if (point != len && Find('.', point + 1) != 0) throw std::exception("its not double");//это все-таки не нужно, так как CharToNumber пройдет по всеми символам и выкинет исключение в случае если там есть не цифра
 
 	bool firstminus = false;
 	UINT startpos = 1;
@@ -276,7 +290,25 @@ MyString::string::operator double()const
 	return res;
 }
 
-UINT MyString::string::GetLen()const {return len;}
+UINT MyString::string::Len()const {return len;}
+
+const char * MyString::string::CString()const {return ptr;}
+
+char * MyString::string::begin() const {return &ptr[0];}
+
+char * MyString::string::end() const { return &ptr[len+1]; }
+
+const char * MyString::string::cbegin() const { return &ptr[0]; }
+
+const char * MyString::string::cend() const { return &ptr[len + 1]; }
+
+char * MyString::string::rbegin() const { return &ptr[len]; }
+
+char * MyString::string::rend() const { return &ptr[-1]; }
+
+const char * MyString::string::crbegin() const { return &ptr[len]; }
+
+const char * MyString::string::crend() const { return &ptr[-1]; }
 
 //возвращает индекс или 0 если ничего не найдено
 UINT MyString::string::Find(const char symbol, const UINT start1, const UINT end1)const
@@ -304,6 +336,31 @@ UINT MyString::string::Find(const char *str, const UINT start1, const UINT end1)
 }
 
 UINT MyString::string::Find(const string &str, const UINT start, const UINT end)const {return Find(str.ptr,start,end);}
+
+void MyString::string::InsertAfter(const UINT index, const char symbol)
+{
+	if (index > len) return;
+	string newstr;
+	newstr.AllocMem(len + 1);
+	strncpy(newstr.ptr, ptr, index);
+	newstr[index+1] = symbol;
+	strcpy(&newstr.ptr[index + 1], &ptr[index]);
+	*this = newstr;
+}
+
+void MyString::string::InsertAfter(const UINT index, const char *str)
+{
+	if (index > len) return;
+	UINT strl = (UINT)strlen(str);
+	string newstr;
+	newstr.AllocMem(len + strl);
+	strncpy(newstr.ptr, ptr, index);
+	strcpy(&newstr.ptr[index], str);
+	strcpy(&newstr.ptr[index+strl], &ptr[index]);
+	*this = newstr;
+}
+
+void MyString::string::InsertAfter(const UINT index, const string &str) {InsertAfter(index, str.ptr);}
 
 MyString::string MyString::string::operator+(const char symbol)const
 {
