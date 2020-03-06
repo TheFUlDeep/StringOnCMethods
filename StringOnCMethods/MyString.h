@@ -22,6 +22,8 @@ namespace MyString {
 		void IntervalException(UINT&, UINT&)const;//функция для конвертации отрезков. Например исопльзуется в SubString
 		int CharToInt(const char)const;//получение кода символа
 		short CharToNumber(const char)const;//преобразованиче цифры в символьном виде в short
+		char CharUpper(const char)const;
+		char CharLower(const char)const;
 	public:
 		//конструкторы
 		string();
@@ -224,6 +226,12 @@ namespace MyString {
 
 		//получение сишной строки (массива чаров)
 		const char* CString()const;
+
+		//занижение английских символов
+		string Lower()const;
+
+		//завышение английских символов
+		string Upper()const;
 
 		//итераторы
 		char* begin()const;

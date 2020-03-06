@@ -81,7 +81,11 @@ int main() {
 	cout << (double)number << "\n";
 
 	number.InsertAfter(4, c);
-	cout << number << endl;
+	cout << number << endl << endl;
+
+	cout << MyString::string("qweASD123`'@").Upper() << endl;
+
+	cout << MyString::string("QWEasd123!`@").Lower() << endl;
 
 	//cout << d << endl; //и это ввод. Закомментил просто потомушта
 	//cin >> d;

@@ -36,6 +36,20 @@ short MyString::string::CharToNumber(const char symbol)const
 	return res;
 }
 
+char MyString::string::CharUpper(const char symbol) const
+{
+	int intsym = int(symbol);
+	if (intsym >= 97 && intsym <= 122) return (char)(intsym - 32);
+	else return symbol;
+}
+
+char MyString::string::CharLower(const char symbol) const
+{
+	int intsym = int(symbol);
+	if (intsym >= 65 && intsym <= 90) return (char)(intsym + 32);
+	else return symbol;
+}
+
 MyString::string::string() = default;
 
 MyString::string::string(const char symbol)
@@ -293,6 +307,26 @@ MyString::string::operator double()const
 UINT MyString::string::Len()const {return len;}
 
 const char * MyString::string::CString()const {return ptr;}
+
+string MyString::string::Lower() const
+{
+	string tmpstr = *this;
+	for (UINT i = 1; i <= tmpstr.len; i++)
+	{
+		tmpstr.ptr[i - 1] = CharLower(tmpstr.ptr[i - 1]);
+	}
+	return tmpstr;
+}
+
+string MyString::string::Upper() const
+{
+	string tmpstr = *this;
+	for (UINT i = 1; i <= tmpstr.len; i++)
+	{
+		tmpstr.ptr[i - 1] = CharUpper(tmpstr.ptr[i - 1]);
+	}
+	return tmpstr;
+}
 
 char * MyString::string::begin() const {return &ptr[0];}
 
